@@ -64,6 +64,13 @@ input {
   font-size: 16px;
 }
 
+.error {
+  color: #e4002b;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
 button {
   font-family: inherit;
   font-size: 16px;

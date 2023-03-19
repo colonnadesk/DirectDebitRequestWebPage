@@ -29,6 +29,19 @@ function App() {
     }
   };
 
+  const validateIban = (e) => {
+    const iban = e.target.value;
+  
+    if (iban && isValid(iban) && iban.startsWith('SK')) {
+      setFormErrors({ ...formErrors, iban: '' });
+    } else {
+      setFormErrors({
+        ...formErrors,
+        iban: 'Please enter a valid Slovak IBAN',
+      });
+    }
+  };
+
   return (
     <div className="App">
       <img src={logo} alt="Colonnade Logo" className="logo" />
@@ -36,19 +49,61 @@ function App() {
         <div className="form-container">
           <form onSubmit={handleSubmit}>
           <label htmlFor="policyNumber">Policy Number:</label>
-          <input type="text" id="policyNumber" name="policyNumber" required />
+          <input
+  type="text"
+  name="policyNumber"
+  value={formData.policyNumber}
+  onChange={handleInputChange}
+  pattern="\d{10}"
+  title="Policy Number must be exactly 10 digits long"
+  required
+/>
+<span className="error">{formErrors.policyNumber}</span>
 
           <label htmlFor="evidenceClientNumber">Birth Number:</label>
-          <input type="text" id="evidenceClientNumber" name="evidenceClientNumber" required />
+          <input
+  type="text"
+  name="birthNumber"
+  value={formData.birthNumber}
+  onChange={handleInputChange}
+  pattern="\d{10}"
+  title="Birth Number must be exactly 10 digits long"
+  required
+/>
+<span className="error">{formErrors.birthNumber}</span>
 
           <label htmlFor="phoneNumber">Phone Number:</label>
-          <input type="tel" id="phoneNumber" name="phoneNumber" required />
+          <input
+  type="tel"
+  name="phoneNumber"
+  value={formData.phoneNumber}
+  onChange={handleInputChange}
+  pattern="^\+\d{1,3}\s\d{1,14}(\s\d{1,13})?$"
+  title="Phone Number must be a valid international format (e.g., +1 555 123 4567)"
+  required
+/>
+<span className="error">{formErrors.phoneNumber}</span>
 
           <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" required />
+          <input
+  type="email"
+  name="email"
+  value={formData.email}
+  onChange={handleInputChange}
+  title="Please enter a valid email address"
+  required
+/>
+<span className="error">{formErrors.email}</span>
 
           <label htmlFor="iban">IBAN:</label>
-          <input type="text" id="iban" name="iban" required />
+          <input
+  type="text"
+  name="iban"
+  value={formData.iban}
+  onChange={handleInputChange}
+  onBlur={validateIban}
+  required
+/>
 
           <button type="submit">Submit</button>
         </form>
