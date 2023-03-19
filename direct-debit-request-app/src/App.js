@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import "https://fonts.googleapis.com/css2?family=Open+Sans&display=swap";
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -29,10 +30,11 @@ function App() {
   };
 
   return (
-    <div className="App container">
     <div className="App">
+      <div className="logo"></div>
       {!submitted ? (
-        <form onSubmit={handleSubmit}>
+        <div className="form-container">
+          <form onSubmit={handleSubmit}>
           <label htmlFor="policyNumber">Policy Number:</label>
           <input type="text" id="policyNumber" name="policyNumber" required />
 
@@ -50,13 +52,13 @@ function App() {
 
           <button type="submit">Submit</button>
         </form>
+        </div>
       ) : (
-        <div>
+        <div className="confirmation">
           <h2>Thank you for submitting your information!</h2>
           <p>We have received your direct debit request.</p>
         </div>
       )}
-    </div>
     </div>
   );
 }
