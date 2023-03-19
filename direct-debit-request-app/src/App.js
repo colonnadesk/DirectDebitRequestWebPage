@@ -29,6 +29,7 @@ function App() {
   };
 
   return (
+    <div className="App container">
     <div className="App">
       {!submitted ? (
         <form onSubmit={handleSubmit}>
@@ -55,6 +56,7 @@ function App() {
           <p>We have received your direct debit request.</p>
         </div>
       )}
+    </div>
     </div>
   );
 }
