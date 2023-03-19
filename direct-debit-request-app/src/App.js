@@ -47,7 +47,18 @@ function App() {
         setSubmitted(true);
       } else {
         const errorData = await response.json();
-        setApiError(errorData.message || 'There was an error submitting the form. Please try again.');
+  
+        if (errorData.errors) {
+          const newFormErrors = {};
+  
+          errorData.errors.forEach((error) => {
+            newFormErrors[error.title.toLowerCase()] = error.message;
+          });
+  
+          setFormErrors(newFormErrors);
+        } else {
+          setApiError(errorData.message || 'There was an error submitting the form. Please try again.');
+        }
       }
     } catch (error) {
       console.error("Error:", error);
