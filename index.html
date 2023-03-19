@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Direct Debit Request Form</h1>
+        <form id="direct-debit-form">
+            <label for="policyNumber">Policy Number:</label>
+            <input type="text" id="policyNumber" name="policyNumber" required>
+            
+            <label for="evidenceClientNumber">Birth Number:</label>
+            <input type="text" id="evidenceClientNumber" name="evidenceClientNumber" required>
+            
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="iban">IBAN:</label>
+            <input type="text" id="iban" name="iban" required>
+            
+            <button type="submit">Submit</button>
+        </form>
+        <div id="confirmation" class="hidden">
+            <h2>Thank you for submitting your information!</h2>
+            <p>We have received your direct debit request.</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
