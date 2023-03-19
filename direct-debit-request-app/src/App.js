@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import logo from './assets/Colonnade-logo.png';
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -30,7 +31,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="logo"></div>
+      <img src={logo} alt="Colonnade Logo" className="logo" />
       {!submitted ? (
         <div className="form-container">
           <form onSubmit={handleSubmit}>
