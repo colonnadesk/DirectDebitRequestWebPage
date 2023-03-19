@@ -24,34 +24,34 @@ function App() {
   });
 
   const [showErrors, setShowErrors] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setShowErrors(true);
-
+  
     if (!isValidPhoneNumber(formData.phoneNumber)) {
       setFormErrors({ ...formErrors, phoneNumber: 'Please enter a valid international phone number.' });
       return;
     }
-    const data = new FormData(event.target);
-
+  
     try {
       const response = await fetch("https://localhost:7255/api/DirectDebitRequests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(Object.fromEntries(data)),
+        body: JSON.stringify(Object.fromEntries(new FormData(event.target))),
       });
-
+  
       if (response.ok) {
         setSubmitted(true);
       } else {
-        alert("There was an error submitting the form. Please try again.");
+        const errorData = await response.json();
+        setApiError(errorData.message || 'There was an error submitting the form. Please try again.');
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("There was an error submitting the form. Please try again.");
+      setApiError('There was an error submitting the form. Please try again.');
     }
   };
 
@@ -89,7 +89,9 @@ function App() {
               title="Policy Number must be exactly 10 digits long"
               required
             />
-            {showErrors && <span className="error">{formErrors.policyNumber}</span>}
+            {showErrors && (
+              <span className="error">{formErrors.policyNumber}</span>
+            )}
 
             <label htmlFor="evidenceClientNumber">Birth Number:</label>
             <input
@@ -101,7 +103,9 @@ function App() {
               title="Birth Number must be exactly 10 digits long"
               required
             />
-            {showErrors && <span className="error">{formErrors.evidenceClientNumber}</span>}
+            {showErrors && (
+              <span className="error">{formErrors.evidenceClientNumber}</span>
+            )}
 
             <label htmlFor="phoneNumber">Phone Number:</label>
             <input
@@ -112,8 +116,9 @@ function App() {
               title="Phone Number must be a valid international format (e.g., +1 555 123 4567)"
               required
             />
-            {showErrors && <span className="error">{formErrors.phoneNumber}</span>}
-
+            {showErrors && (
+              <span className="error">{formErrors.phoneNumber}</span>
+            )}
 
             <label htmlFor="email">Email:</label>
             <input
@@ -124,7 +129,7 @@ function App() {
               title="Please enter a valid email address"
               required
             />
-           {showErrors && <span className="error">{formErrors.email}</span>}
+            {showErrors && <span className="error">{formErrors.email}</span>}
 
             <label htmlFor="iban">IBAN:</label>
             <input
@@ -136,6 +141,7 @@ function App() {
               required
             />
             {showErrors && <span className="error">{formErrors.iban}</span>}
+            {apiError && <div className="error api-error">{apiError}</div>}
 
             <button type="submit">Submit</button>
           </form>
