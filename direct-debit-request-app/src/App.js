@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-import "https://fonts.googleapis.com/css2?family=Open+Sans&display=swap";
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
