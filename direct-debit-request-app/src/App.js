@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import './App.css';
 import logo from './assets/Colonnade-logo.png';
 import { isValid } from 'iban';
+import { isValidPhoneNumber } from 'libphonenumber-js';
+import { debounce } from 'lodash';
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     policyNumber: '',
-    birthNumber: '',
+    evidenceClientNumber: '',
     phoneNumber: '',
     email: '',
     iban: '',
@@ -15,14 +17,22 @@ function App() {
   
   const [formErrors, setFormErrors] = useState({
     policyNumber: '',
-    birthNumber: '',
+    evidenceClientNumber: '',
     phoneNumber: '',
     email: '',
     iban: '',
   });
 
+  const [showErrors, setShowErrors] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setShowErrors(true);
+
+    if (!isValidPhoneNumber(formData.phoneNumber)) {
+      setFormErrors({ ...formErrors, phoneNumber: 'Please enter a valid international phone number.' });
+      return;
+    }
     const data = new FormData(event.target);
 
     try {
@@ -45,7 +55,7 @@ function App() {
     }
   };
 
-  const validateIban = (e) => {
+  const validateIban = debounce((e) => {
     const iban = e.target.value;
   
     if (iban && isValid(iban) && iban.startsWith('SK')) {
@@ -56,7 +66,7 @@ function App() {
         iban: 'Please enter a valid Slovak IBAN',
       });
     }
-  };
+  }, 500);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -79,19 +89,19 @@ function App() {
               title="Policy Number must be exactly 10 digits long"
               required
             />
-            <span className="error">{formErrors.policyNumber}</span>
+            {showErrors && <span className="error">{formErrors.policyNumber}</span>}
 
             <label htmlFor="evidenceClientNumber">Birth Number:</label>
             <input
               type="text"
-              name="birthNumber"
-              value={formData.birthNumber}
+              name="evidenceClientNumber"
+              value={formData.evidenceClientNumber}
               onChange={handleInputChange}
               pattern="\d{10}"
               title="Birth Number must be exactly 10 digits long"
               required
             />
-            <span className="error">{formErrors.birthNumber}</span>
+            {showErrors && <span className="error">{formErrors.evidenceClientNumber}</span>}
 
             <label htmlFor="phoneNumber">Phone Number:</label>
             <input
@@ -99,11 +109,11 @@ function App() {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              pattern="^\+\d{1,3}\s\d{1,14}(\s\d{1,13})?$"
               title="Phone Number must be a valid international format (e.g., +1 555 123 4567)"
               required
             />
-            <span className="error">{formErrors.phoneNumber}</span>
+            {showErrors && <span className="error">{formErrors.phoneNumber}</span>}
+
 
             <label htmlFor="email">Email:</label>
             <input
@@ -114,7 +124,7 @@ function App() {
               title="Please enter a valid email address"
               required
             />
-            <span className="error">{formErrors.email}</span>
+           {showErrors && <span className="error">{formErrors.email}</span>}
 
             <label htmlFor="iban">IBAN:</label>
             <input
@@ -125,6 +135,7 @@ function App() {
               onBlur={validateIban}
               required
             />
+            {showErrors && <span className="error">{formErrors.iban}</span>}
 
             <button type="submit">Submit</button>
           </form>
