@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+Prompt:
+Here is current version of App.js. There is no error message displayed currently even if API responds with 400 status code: import React, { useState } from 'react';
 import './App.css';
 import logo from './assets/Colonnade-logo.png';
 import { isValid } from 'iban';
@@ -28,7 +29,6 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setShowErrors(true);
   
     if (!isValidPhoneNumber(formData.phoneNumber)) {
       setFormErrors({ ...formErrors, phoneNumber: 'Please enter a valid international phone number.' });
@@ -168,4 +168,29 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
+
+GPT:
+It seems like you forgot to set showErrors to true after the form submission attempt. You should update the handleSubmit function to set showErrors to true when the form is submitted.
+
+Add this line at the beginning of the handleSubmit function:
+
+javascript
+Copy code
+setShowErrors(true);
+Your updated handleSubmit function should look like this:
+
+javascript
+Copy code
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  setShowErrors(true); // Add this line
+  
+  if (!isValidPhoneNumber(formData.phoneNumber)) {
+    setFormErrors({ ...formErrors, phoneNumber: 'Please enter a valid international phone number.' });
+    return;
+  }
+
+  // ... rest of the code ...
+};
+Now, when the form is submitted, it will display the error messages returned by the API.
