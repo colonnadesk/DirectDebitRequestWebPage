@@ -52,16 +52,20 @@ form {
 label {
   font-weight: bold;
   color: #003859;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 input {
-  border: 2px solid #E4002B;
+  border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
   width: 100%;
   font-family: inherit;
   font-size: 16px;
+}
+
+input.error {
+  border-color: #E4002B;
 }
 
 .error {

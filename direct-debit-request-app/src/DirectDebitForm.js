@@ -28,9 +28,12 @@ const DirectDebitForm = ({ onSuccess }) => {
     setShowErrors(true);
 
     if (!isValidPhoneNumber(formData.phoneNumber)) {
-      setFormErrors({ ...formErrors, phoneNumber: 'Please enter a valid international phone number.' });
-      return;
-    }
+        setFormErrors({ ...formErrors, phoneNumber: 'Please enter a valid international phone number.' });
+        event.target.phoneNumber.classList.add("error");
+        return;
+      } else {
+        event.target.phoneNumber.classList.remove("error");
+      }
 
     try {
       const response = await fetch("https://localhost:7255/api/DirectDebitRequests", {
@@ -72,18 +75,28 @@ const DirectDebitForm = ({ onSuccess }) => {
     const iban = e.target.value;
 
     if (iban && isValid(iban) && iban.startsWith('SK')) {
-      setFormErrors({ ...formErrors, iban: '' });
-    } else {
-      setFormErrors({
-        ...formErrors,
-        iban: 'Please enter a valid Slovak IBAN',
-      });
-    }
+        setFormErrors({ ...formErrors, iban: '' });
+        e.target.classList.remove("error");
+      } else {
+        setFormErrors({
+          ...formErrors,
+          iban: 'Please enter a valid Slovak IBAN',
+        });
+        e.target.classList.add("error");
+      }
   }, 500);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  
+    if (showErrors) {
+      if (formErrors[name]) {
+        e.target.classList.add("error");
+      } else {
+        e.target.classList.remove("error");
+      }
+    }
   };
 
   return (
